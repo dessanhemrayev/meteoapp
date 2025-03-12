@@ -17,8 +17,8 @@ namespace MeteoApp
             InitializeComponent();
             set_weather_data();
         }
-        public static string city="Курск";
-        public static string api_key= "2de0955b5bffdb47a722c2878d744420";
+        public static string city="";
+        public static string api_key= "";
 
         public static WeatherResponse getDataAPI()
         {
