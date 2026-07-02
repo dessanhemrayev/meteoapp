@@ -1,4 +1,4 @@
-name: .NET Framework Desktop Build
+name: Build .NET Framework Desktop App
 
 on:
   push:
@@ -28,16 +28,22 @@ jobs:
         run: nuget restore MeteoApp.sln
 
       - name: Build solution
-        run: msbuild MeteoApp.sln /p:Configuration=Release /p:Platform="AnyCPU"
+        run: msbuild MeteoApp.sln /p:Configuration=Release
 
       - name: Verify build output
         shell: pwsh
         run: |
           if (!(Test-Path "bin\Release\MeteoApp.exe")) {
-            throw "Build failed: MeteoApp.exe not found."
+            Write-Host "Contents of bin:"
+            if (Test-Path "bin") {
+              Get-ChildItem -Recurse "bin"
+            } else {
+              Write-Host "bin folder not found."
+            }
+            throw "MeteoApp.exe not found."
           }
 
-      - name: Create ZIP package
+      - name: Create ZIP
         shell: pwsh
         run: |
           Compress-Archive `
@@ -52,23 +58,26 @@ jobs:
           path: MeteoApp-release.zip
 
       - name: Configure Git
+        shell: pwsh
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Create and Push Tag
+      - name: Create Tag
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: pwsh
         run: |
-          $version = "v1.0.${{ github.run_number }}"
+          $tag = "v1.0.${{ github.run_number }}"
 
-          if ((git tag -l $version) -eq $version) {
-            Write-Host "Tag already exists."
+          $exists = git tag -l $tag
+
+          if ($exists -eq $tag) {
+              Write-Host "Tag already exists."
           }
           else {
-            git tag $version
-            git push origin $version
+              git tag $tag
+              git push origin $tag
           }
 
       - name: Create GitHub Release
@@ -78,6 +87,5 @@ jobs:
           name: Release v1.0.${{ github.run_number }}
           files: MeteoApp-release.zip
           generate_release_notes: true
-          make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
