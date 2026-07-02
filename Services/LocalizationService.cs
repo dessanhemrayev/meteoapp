@@ -24,13 +24,18 @@ namespace MeteoApp.Services
             EnglishMenu = "English",
             SettingsButton = "Настр.",
             RefreshButton = "Обновить",
-            EnterApiKey = "Введите API key OpenWeatherMap:",
+            EnterApiKey = "API key OpenWeatherMap:",
             SettingsTitle = "Настройки",
             ApiKeySaved = "API key сохранён.",
             ApiKeyCleared = "API key удалён. Введите новый ключ для работы приложения.",
             EnterApiKeyPrompt = "Введите API key в настройках",
             SelectCityPrompt = "Пожалуйста, выберите город",
-            FetchError = "Не удалось получить данные"
+            FetchError = "Не удалось получить данные",
+            CityLabel = "Город:",
+            NewCityLabel = "Новый город:",
+            AddCityButton = "Добавить",
+            SaveButton = "Сохранить",
+            CancelButton = "Отмена"
         };
 
         public static readonly LanguageStrings English = new LanguageStrings
@@ -40,13 +45,18 @@ namespace MeteoApp.Services
             EnglishMenu = "English",
             SettingsButton = "Settings",
             RefreshButton = "Refresh",
-            EnterApiKey = "Enter OpenWeatherMap API key:",
+            EnterApiKey = "OpenWeatherMap API key:",
             SettingsTitle = "Settings",
             ApiKeySaved = "API key saved.",
             ApiKeyCleared = "API key removed. Enter a new key to use the app.",
             EnterApiKeyPrompt = "Enter API key in settings",
             SelectCityPrompt = "Please select a city",
-            FetchError = "Unable to retrieve data"
+            FetchError = "Unable to retrieve data",
+            CityLabel = "City:",
+            NewCityLabel = "New city:",
+            AddCityButton = "Add",
+            SaveButton = "Save",
+            CancelButton = "Cancel"
         };
 
         public string LanguageMenu { get; set; }
@@ -61,5 +71,10 @@ namespace MeteoApp.Services
         public string EnterApiKeyPrompt { get; set; }
         public string SelectCityPrompt { get; set; }
         public string FetchError { get; set; }
+        public string CityLabel { get; set; }
+        public string NewCityLabel { get; set; }
+        public string AddCityButton { get; set; }
+        public string SaveButton { get; set; }
+        public string CancelButton { get; set; }
     }
 }
