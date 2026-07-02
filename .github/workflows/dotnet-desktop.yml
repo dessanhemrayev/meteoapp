@@ -3,8 +3,12 @@ name: .NET Framework Desktop Build
 on:
   push:
     branches: ["master"]
+    tags: ["v*"]
   pull_request:
     branches: ["master"]
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -27,3 +31,27 @@ jobs:
 
       - name: Build solution
         run: msbuild MeteoApp.sln /p:Configuration=${{ matrix.configuration }} /p:Platform="Any CPU"
+
+      - name: Prepare release package
+        if: matrix.configuration == 'Release'
+        shell: pwsh
+        run: |
+          $releaseDir = "artifacts/MeteoApp"
+          New-Item -ItemType Directory -Path $releaseDir -Force | Out-Null
+          Copy-Item -Path "bin/Release/*" -Destination $releaseDir -Recurse -Force
+          Copy-Item -Path "App.config" -Destination $releaseDir -Force
+          Compress-Archive -Path "$releaseDir/*" -DestinationPath "MeteoApp-release.zip" -Force
+
+      - name: Upload release artifact
+        if: matrix.configuration == 'Release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: MeteoApp-release
+          path: MeteoApp-release.zip
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/') && matrix.configuration == 'Release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: MeteoApp-release.zip
+          generate_release_notes: true
