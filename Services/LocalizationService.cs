@@ -49,17 +49,17 @@ namespace MeteoApp.Services
             FetchError = "Unable to retrieve data"
         };
 
-        public string LanguageMenu { get; init; }
-        public string RussianMenu { get; init; }
-        public string EnglishMenu { get; init; }
-        public string SettingsButton { get; init; }
-        public string RefreshButton { get; init; }
-        public string EnterApiKey { get; init; }
-        public string SettingsTitle { get; init; }
-        public string ApiKeySaved { get; init; }
-        public string ApiKeyCleared { get; init; }
-        public string EnterApiKeyPrompt { get; init; }
-        public string SelectCityPrompt { get; init; }
-        public string FetchError { get; init; }
+        public string LanguageMenu { get; set; }
+        public string RussianMenu { get; set; }
+        public string EnglishMenu { get; set; }
+        public string SettingsButton { get; set; }
+        public string RefreshButton { get; set; }
+        public string EnterApiKey { get; set; }
+        public string SettingsTitle { get; set; }
+        public string ApiKeySaved { get; set; }
+        public string ApiKeyCleared { get; set; }
+        public string EnterApiKeyPrompt { get; set; }
+        public string SelectCityPrompt { get; set; }
+        public string FetchError { get; set; }
     }
 }
