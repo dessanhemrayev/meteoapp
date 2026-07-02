@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using MeteoApp.Services;
@@ -24,10 +25,15 @@ namespace MeteoApp
 
             SetupLanguage();
             FillCityList();
-            UpdateWeather();
+            this.Load += MainForm_Load;
         }
 
-        private void UpdateWeather()
+        private async void MainForm_Load(object sender, EventArgs e)
+        {
+            await UpdateWeather();
+        }
+
+        private async Task UpdateWeather()
         {
             if (string.IsNullOrWhiteSpace(_settings.ApiKey))
             {
@@ -37,14 +43,14 @@ namespace MeteoApp
 
             if (listBox1.SelectedItem == null)
             {
-                SetMessage(_localizationService.CurrentStrings.EnterApiKeyPrompt);
+                SetMessage(_localizationService.CurrentStrings.SelectCityPrompt);
                 return;
             }
 
             try
             {
                 var city = (string)listBox1.SelectedItem;
-                var response = _weatherService.GetWeather(city);
+                var response = await _weatherService.GetWeather(city);
                 degree.Text = response.main.temp.ToString();
                 weather.Text = response.weather[0].description;
                 pictureBox1.ImageLocation = $"https://openweathermap.org/img/w/{response.weather[0].icon}.png";
@@ -86,12 +92,12 @@ namespace MeteoApp
                 listBox1.SelectedIndex = 0;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
-            UpdateWeather();
+            await UpdateWeather();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
             string newKey = Interaction.InputBox(
                 _localizationService.CurrentStrings.EnterApiKey,
@@ -114,10 +120,10 @@ namespace MeteoApp
             }
 
             MessageBox.Show(_localizationService.CurrentStrings.ApiKeySaved, _localizationService.CurrentStrings.SettingsTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            UpdateWeather();
+            await UpdateWeather();
         }
 
-        private void addCityButton_Click(object sender, EventArgs e)
+        private async void addCityButton_Click(object sender, EventArgs e)
         {
             string newCity = textBoxCity.Text?.Trim();
             if (string.IsNullOrWhiteSpace(newCity))
@@ -130,32 +136,32 @@ namespace MeteoApp
 
             listBox1.SelectedItem = newCity;
             textBoxCity.Clear();
-            UpdateWeather();
+            await UpdateWeather();
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private async void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UpdateWeather();
+            await UpdateWeather();
         }
 
-        private void russianToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void russianToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChangeLanguage("ru");
+            await ChangeLanguage("ru");
         }
 
-        private void englishToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void englishToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChangeLanguage("en");
+            await ChangeLanguage("en");
         }
 
-        private void ChangeLanguage(string languageCode)
+        private async Task ChangeLanguage(string languageCode)
         {
             _settings.Language = languageCode == "en" ? "en" : "ru";
             _settings.Save();
             _localizationService.SetLanguage(_settings.Language);
             SetupLanguage();
             FillCityList();
-            UpdateWeather();
+            await UpdateWeather();
         }
     }
 }

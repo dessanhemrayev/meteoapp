@@ -29,6 +29,7 @@ namespace MeteoApp.Services
             ApiKeySaved = "API key сохранён.",
             ApiKeyCleared = "API key удалён. Введите новый ключ для работы приложения.",
             EnterApiKeyPrompt = "Введите API key в настройках",
+            SelectCityPrompt = "Пожалуйста, выберите город",
             FetchError = "Не удалось получить данные"
         };
 
@@ -44,6 +45,7 @@ namespace MeteoApp.Services
             ApiKeySaved = "API key saved.",
             ApiKeyCleared = "API key removed. Enter a new key to use the app.",
             EnterApiKeyPrompt = "Enter API key in settings",
+            SelectCityPrompt = "Please select a city",
             FetchError = "Unable to retrieve data"
         };
 
@@ -57,6 +59,7 @@ namespace MeteoApp.Services
         public string ApiKeySaved { get; init; }
         public string ApiKeyCleared { get; init; }
         public string EnterApiKeyPrompt { get; init; }
+        public string SelectCityPrompt { get; init; }
         public string FetchError { get; init; }
     }
 }

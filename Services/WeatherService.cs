@@ -1,11 +1,12 @@
-using System.IO;
-using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace MeteoApp.Services
 {
     public class WeatherService
     {
+        private static readonly HttpClient HttpClient = new HttpClient();
         private readonly AppSettings _settings;
 
         public WeatherService(AppSettings settings)
@@ -13,17 +14,16 @@ namespace MeteoApp.Services
             _settings = settings;
         }
 
-        public WeatherResponse GetWeather(string city)
+        public async Task<WeatherResponse> GetWeather(string city)
         {
             string requestLanguage = _settings.Language == "en" ? "en" : "ru";
             string requestUrl = $"https://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&lang={requestLanguage}&APPID={_settings.ApiKey}";
 
-            var request = (HttpWebRequest)WebRequest.Create(requestUrl);
-            using (var response = (HttpWebResponse)request.GetResponse())
-            using (var reader = new StreamReader(response.GetResponseStream()))
+            using (var response = await HttpClient.GetAsync(requestUrl).ConfigureAwait(false))
             {
-                string raw = reader.ReadToEnd();
-                return JsonConvert.DeserializeObject<WeatherResponse>(raw);
+                response.EnsureSuccessStatusCode();
+                var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                return JsonConvert.DeserializeObject<WeatherResponse>(json);
             }
         }
     }
