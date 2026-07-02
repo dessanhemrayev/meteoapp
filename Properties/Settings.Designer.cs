@@ -56,5 +56,35 @@ namespace MeteoApp.Properties
                 this["Language"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SelectedCity
+        {
+            get
+            {
+                return ((string)(this["SelectedCity"]));
+            }
+            set
+            {
+                this["SelectedCity"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CustomCities
+        {
+            get
+            {
+                return ((string)(this["CustomCities"]));
+            }
+            set
+            {
+                this["CustomCities"] = value;
+            }
+        }
     }
 }
